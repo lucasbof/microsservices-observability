@@ -1,0 +1,44 @@
+server:
+  port: 5000
+spring:
+  application:
+    name: teste-app
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/myrealm
+          jwk-set-uri: http://localhost:8080/realms/myrealm/protocol/openid-connect/certs
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: 'prometheus, health'
+  metrics:
+    enable:
+      all: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+otel:
+  exporter:
+    otlp:
+      traces:
+        endpoint: http://localhost:4317
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId}] [%thread] %-5level %logger{36} - %msg%n"
+
+
+api:
+  teste1:
+    clientId: teste1-app
+    clientSecret: secret123
+    grantType: client_credentials
