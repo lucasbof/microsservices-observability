@@ -35,6 +35,9 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'io.github.openfeign:feign-micrometer:13.5'
 
+	// MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
 
 	// jackson
 	implementation 'com.fasterxml.jackson.core:jackson-databind'

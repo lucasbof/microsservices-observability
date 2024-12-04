@@ -3,6 +3,8 @@ package com.teste.teste.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.teste.teste.client.AuthTeste1Client;
 import com.teste.teste.client.Teste1Client;
+import com.teste.teste.model.Product;
+import com.teste.teste.repositories.ProductRepository;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class TesteService {
@@ -33,6 +36,9 @@ public class TesteService {
     @Autowired
     private Teste1Client teste1Client;
 
+    @Autowired
+    private ProductRepository productRepository;
+
 
 
     @Autowired
@@ -43,7 +49,7 @@ public class TesteService {
 
     public void getProduct() {
         Span chamadaTeste1 = tracer.nextSpan().name("chamada Teste 1").start();
-        try (Tracer.SpanInScope scope = tracer.withSpan(chamadaTeste1)) {
+        try (Tracer.SpanInScope ignored = tracer.withSpan(chamadaTeste1)) {
             logger.info("Chamando Teste 1");
 
 
@@ -66,6 +72,13 @@ public class TesteService {
             ResponseEntity<?> product = teste1Client.getProduct("Bearer " + token);
 
             logger.info("status code {}", product.getStatusCode());
+
+            Optional<Product> productClazzOpt = productRepository.findById("1");
+
+            productClazzOpt
+                    .ifPresent(p -> {
+                        logger.info("Produto id={} name={}", p.id(), p.name());
+            });
         } catch (Exception e) {
             logger.error("Erro na chamada", e);
         }

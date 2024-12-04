@@ -45,3 +45,13 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+  mongodb-atlas:
+    image: mongo:latest
+    container_name: mongodb-atlas
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
